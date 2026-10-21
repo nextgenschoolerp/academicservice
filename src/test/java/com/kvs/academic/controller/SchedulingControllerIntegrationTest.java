@@ -94,6 +94,38 @@ class SchedulingControllerIntegrationTest extends AcademicTestSupport {
     // ------------------------------------------------------------------ US-06001
 
     @Test
+    @DisplayName("US-06001: class list has every section in grade order with allocation and timetable counts; tenant-scoped; 401; parent 403")
+    void classList() throws Exception {
+        var lower = gradeRepository.save(com.kvs.academic.entity.Grade.builder().tenantId(tenant).gradeName("Class 6").gradeCode("G6-" + run)
+                .sequenceOrder(9).build());
+        sectionRepository.save(com.kvs.academic.entity.Section.builder().gradeId(lower.getGradeId()).sectionName("C").maxCapacity(40).build());
+        allocate(sectionA, math, neha, 6);
+        allocate(sectionA, eng, ravi, 5);
+        generate(sectionA.getSectionId());
+
+        JsonNode classes = data(getAs("/classes", token("TIMETABLE_INCHARGE")).andExpect(status().isOk()));
+        assertThat(classes).hasSize(3);
+        assertThat(classes.get(0).path("className").asText()).isEqualTo("Class 6-C");
+        assertThat(classes.get(0).path("allocatedSubjects").asInt()).isZero();
+        assertThat(classes.get(1).path("className").asText()).isEqualTo("Class 7-A");
+        assertThat(classes.get(1).path("sectionId").asText()).isEqualTo(sectionA.getSectionId().toString());
+        assertThat(classes.get(1).path("gradeName").asText()).isEqualTo("Class 7");
+        assertThat(classes.get(1).path("allocatedSubjects").asInt()).isEqualTo(2);
+        assertThat(classes.get(1).path("allocatedPeriodsPerWeek").asInt()).isEqualTo(11);
+        assertThat(classes.get(1).path("timetabledPeriods").asInt()).isEqualTo(11);
+        assertThat(classes.get(2).path("className").asText()).isEqualTo("Class 7-B");
+        assertThat(classes.get(2).path("timetabledPeriods").asInt()).isZero();
+
+        // Every Module 06 staff role reads it (the coordinator roles cannot read studentservice's sections)
+        for (String role : List.of("ACADEMIC_COORDINATOR", "SUBSTITUTION_INCHARGE", "ELEARNING_ADMIN", "SUBJECT_TEACHER", "SCHOOL_PRINCIPAL")) {
+            assertThat(data(getAs("/classes", token(role)).andExpect(status().isOk()))).hasSize(3);
+        }
+        assertThat(data(getAs("/classes", token("TIMETABLE_INCHARGE", "other-" + run, "T-OTHER-" + run)).andExpect(status().isOk()))).isEmpty();
+        getAs("/classes", null).andExpect(status().isUnauthorized());
+        getAs("/classes", parentToken()).andExpect(status().isForbidden());
+    }
+
+    @Test
     @DisplayName("US-06001: caps and utilisation; over the weekly cap 409; not qualified 409; lowering a cap below allocations 409; duplicate subject 409")
     void workloadCaps() throws Exception {
         allocate(sectionA, math, neha, 6);

@@ -3,6 +3,7 @@ package com.kvs.academic.service;
 import com.kvs.academic.dto.*;
 import com.kvs.academic.entity.BellPeriod;
 import com.kvs.academic.entity.BellSchedule;
+import com.kvs.academic.entity.Grade;
 import com.kvs.academic.entity.FacultyWorkload;
 import com.kvs.academic.entity.Section;
 import com.kvs.academic.entity.Subject;
@@ -13,7 +14,9 @@ import com.kvs.academic.enums.SubjectType;
 import com.kvs.academic.repo.BellPeriodRepository;
 import com.kvs.academic.repo.BellScheduleRepository;
 import com.kvs.academic.repo.FacultyWorkloadRepository;
+import com.kvs.academic.repo.GradeRepository;
 import com.kvs.academic.repo.ProxySubstitutionRepository;
+import com.kvs.academic.repo.SectionRepository;
 import com.kvs.academic.repo.SubjectAllocationRepository;
 import com.kvs.academic.repo.SubjectRepository;
 import com.kvs.academic.repo.TimetableEntryRepository;
@@ -56,6 +59,8 @@ public class SchedulingService {
     @Autowired private SubjectAllocationRepository allocationRepository;
     @Autowired private TimetableEntryRepository entryRepository;
     @Autowired private ProxySubstitutionRepository substitutionRepository;
+    @Autowired private GradeRepository gradeRepository;
+    @Autowired private SectionRepository sectionRepository;
 
     // ------------------------------------------------------------------ US-06000 bell schedules
 
@@ -277,6 +282,32 @@ public class SchedulingService {
         audit.logSuccess("SUBJECT_ALLOCATION", "SUBJECT_ALLOCATED", ctx.className(section) + " " + subject.getSubjectCode() + " → "
                 + workload.getTeacherName() + " (" + request.getPeriodsPerWeek() + "/week)");
         return toResponse(saved);
+    }
+
+    /** Every class section of the tenant in grade order, with its allocation and timetable counts (the class pickers). */
+    @Transactional(readOnly = true)
+    public List<ClassSectionResponse> listClasses(String tenantId) {
+        String tenant = ctx.tenant(tenantId);
+        Map<UUID, Grade> grades = gradeRepository.findByTenantIdOrderBySequenceOrderAsc(tenant).stream()
+                .collect(Collectors.toMap(Grade::getGradeId, g -> g, (a, b) -> a, LinkedHashMap::new));
+        if (grades.isEmpty()) {
+            return List.of();
+        }
+        Map<UUID, List<SubjectAllocation>> allocations = allocationRepository.findByTenantId(tenant).stream()
+                .collect(Collectors.groupingBy(SubjectAllocation::getSectionId));
+        Map<UUID, Long> slots = entryRepository.findByTenantId(tenant).stream()
+                .collect(Collectors.groupingBy(TimetableEntry::getSectionId, Collectors.counting()));
+        Comparator<Section> order = Comparator.comparing((Section s) -> grades.get(s.getGradeId()).getSequenceOrder(),
+                Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(Section::getSectionName);
+        return sectionRepository.findByGradeIdIn(grades.keySet()).stream().sorted(order).map(s -> {
+            Grade g = grades.get(s.getGradeId());
+            List<SubjectAllocation> allocated = allocations.getOrDefault(s.getSectionId(), List.of());
+            return ClassSectionResponse.builder().sectionId(s.getSectionId()).gradeId(g.getGradeId()).gradeName(g.getGradeName())
+                    .gradeOrder(g.getSequenceOrder()).sectionName(s.getSectionName()).className(g.getGradeName() + "-" + s.getSectionName())
+                    .allocatedSubjects(allocated.size())
+                    .allocatedPeriodsPerWeek(allocated.stream().mapToInt(a -> a.getPeriodsPerWeek() == null ? 0 : a.getPeriodsPerWeek()).sum())
+                    .timetabledPeriods(slots.getOrDefault(s.getSectionId(), 0L).intValue()).build();
+        }).toList();
     }
 
     @Transactional(readOnly = true)

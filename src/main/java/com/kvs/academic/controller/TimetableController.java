@@ -84,6 +84,12 @@ public class TimetableController {
         return ResponseEntity.ok(ApiResponse.success(service.listWorkloads(tenantId)));
     }
 
+    @GetMapping("/classes")
+    @PreAuthorize(AcademicRoles.STAFF_VIEW)
+    public ResponseEntity<ApiResponse<List<ClassSectionResponse>>> listClasses(@RequestParam(value = "tenantId", required = false) String tenantId) {
+        return ResponseEntity.ok(ApiResponse.success(service.listClasses(tenantId)));
+    }
+
     @PostMapping("/allocations")
     @PreAuthorize(AcademicRoles.WORKLOAD)
     public ResponseEntity<ApiResponse<AllocationResponse>> allocate(@Valid @RequestBody AllocationRequest request) {
