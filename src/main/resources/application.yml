@@ -1,0 +1,66 @@
+spring:
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java,src/main/resources
+      poll-interval: 2s
+      quiet-period: 1s
+    livereload:
+      enabled: true
+  application:
+    name: academicservice
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/authservice}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 3
+      minimum-idle: 1
+  flyway:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  servlet:
+    multipart:
+      # US-06005: lecture videos can be large; the asset store applies its own per-type limit
+      max-file-size: ${LMS_MAX_UPLOAD:500MB}
+      max-request-size: ${LMS_MAX_UPLOAD:500MB}
+
+server:
+  port: ${SERVER_PORT:8087}
+  servlet:
+    # All endpoints are served under http://localhost:8087/academicservice (e.g. /academicservice/api/v1/lms/bell-schedules)
+    context-path: ${SERVER_CONTEXT_PATH:/academicservice}
+
+academic:
+  # US-06005: e-learning asset store (PDF, MP4, EPUB, SCORM zip)
+  asset-store:
+    base-path: ${LMS_ASSET_PATH:./lms-assets}
+    max-file-size-bytes: ${LMS_MAX_FILE_BYTES:524288000}
+
+jwt:
+  secret: ${JWT_SECRET:5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437}
+  expiration: ${JWT_EXPIRATION:1800000}
+
+management:
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: [w3c, b3]
+      produce: [w3c, b3]
+
+logging:
+  level:
+    root: info
+    com.kvs: debug
+    com.kvs.core.logging.RequestAndRepositoryLoggingAspect: debug
+    org.springframework.security: info

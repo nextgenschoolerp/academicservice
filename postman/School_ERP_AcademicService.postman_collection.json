@@ -1,0 +1,4165 @@
+{
+  "info": {
+    "_postman_id": "74255ee5-ead1-55ce-b9d7-f5921728678b",
+    "name": "School ERP - AcademicService (Module 06)",
+    "description": "Module 06 Academics, Timetable & LMS (academicservice, port 8087, /academicservice/api/v1/lms). Run the folders in order after loading module06_academic_seed.sql: sign in, then each story chains its ids into the next (quiz → attempt, homework → evaluation …). Uses the seeded DPS North accounts (Password@123). The PDF upload in US-06005 needs a local mughal-notes.pdf.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "00 - Sign in (authservice)",
+      "item": [
+        {
+          "name": "Sign in as coordinator_sunita",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('coordinatorToken', pm.response.json().data.accessToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"coordinator_sunita\", \"password\": \"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{authUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Sign in as timetable_rahul",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('timetableToken', pm.response.json().data.accessToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"timetable_rahul\", \"password\": \"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{authUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Sign in as substitution_meenal",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('substitutionToken', pm.response.json().data.accessToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"substitution_meenal\", \"password\": \"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{authUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Sign in as elearning_farah",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('elearningToken', pm.response.json().data.accessToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"elearning_farah\", \"password\": \"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{authUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Sign in as subjectteacher_neha",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('teacherToken', pm.response.json().data.accessToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"subjectteacher_neha\", \"password\": \"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{authUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Sign in as classteacher_priya",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('classTeacherToken', pm.response.json().data.accessToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"classteacher_priya\", \"password\": \"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{authUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Sign in as principal_anita",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('principalToken', pm.response.json().data.accessToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"principal_anita\", \"password\": \"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{authUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Sign in as parent_rohit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('parentToken', pm.response.json().data.accessToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"parent_rohit\", \"password\": \"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{authUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "No token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/bell-schedules"
+          }
+        },
+        {
+          "name": "Access rules (trace id echoed)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('trace id echoed', () => pm.expect(pm.response.headers.get('X-Trace-Id')).to.eql('trace-postman-06'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "X-Trace-Id",
+                "value": "trace-postman-06"
+              }
+            ],
+            "url": "{{baseUrl}}/access-rules"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06000 - Configure daily period schedules, recess times, and master bell patterns",
+      "item": [
+        {
+          "name": "Create a bell schedule (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.expect([201]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code < 300) { try { pm.collectionVariables.set('newScheduleId', pm.response.json().data.bellScheduleId); } catch (e) {} }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{coordinatorToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/bell-schedules",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"branchId\": \"DPS-DELHI-NORTH\",\n  \"scheduleName\": \"Exam week timings\",\n  \"workingDays\": [\n    1,\n    2,\n    3,\n    4,\n    5\n  ],\n  \"slots\": [\n    {\n      \"slotType\": \"ASSEMBLY\",\n      \"label\": \"Assembly\",\n      \"startTime\": \"07:50\",\n      \"endTime\": \"08:10\"\n    },\n    {\n      \"slotType\": \"PERIOD\",\n      \"label\": \"Period 1\",\n      \"startTime\": \"08:10\",\n      \"endTime\": \"08:50\"\n    },\n    {\n      \"slotType\": \"PERIOD\",\n      \"label\": \"Period 2\",\n      \"startTime\": \"08:50\",\n      \"endTime\": \"09:30\"\n    },\n    {\n      \"slotType\": \"RECESS\",\n      \"label\": \"Recess\",\n      \"startTime\": \"09:30\",\n      \"endTime\": \"09:50\"\n    },\n    {\n      \"slotType\": \"PERIOD\",\n      \"label\": \"Period 3\",\n      \"startTime\": \"09:50\",\n      \"endTime\": \"10:30\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Overlapping slots (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.expect([400]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{coordinatorToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/bell-schedules",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"branchId\": \"DPS-DELHI-NORTH\",\n  \"scheduleName\": \"Bad\",\n  \"workingDays\": [\n    1\n  ],\n  \"slots\": [\n    {\n      \"slotType\": \"PERIOD\",\n      \"label\": \"Period 1\",\n      \"startTime\": \"08:10\",\n      \"endTime\": \"08:50\"\n    },\n    {\n      \"slotType\": \"RECESS\",\n      \"label\": \"Recess\",\n      \"startTime\": \"08:30\",\n      \"endTime\": \"09:50\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Subject teacher cannot configure (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/bell-schedules",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"branchId\": \"DPS-DELHI-NORTH\",\n  \"scheduleName\": \"Mine\",\n  \"workingDays\": [\n    1\n  ],\n  \"slots\": [\n    {\n      \"slotType\": \"PERIOD\",\n      \"label\": \"Period 1\",\n      \"startTime\": \"08:10\",\n      \"endTime\": \"08:50\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List schedules",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{timetableToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/bell-schedules?branchId=DPS-DELHI-NORTH"
+          }
+        },
+        {
+          "name": "Get the seeded schedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/bell-schedules/{{bellScheduleId}}"
+          }
+        },
+        {
+          "name": "Re-activate the seeded schedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{coordinatorToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/bell-schedules/{{bellScheduleId}}/activate"
+          }
+        },
+        {
+          "name": "Unknown schedule (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 404', () => pm.expect([404]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/bell-schedules/00000000-0000-4000-8000-000000000000"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06001 - Assign faculty workload hours based on weekly maximum teaching caps",
+      "item": [
+        {
+          "name": "Subjects",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/subjects"
+          }
+        },
+        {
+          "name": "Create a subject (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.expect([201]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{timetableToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/subjects",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subjectCode\": \"ART-{{$randomInt}}\",\n  \"subjectName\": \"Art\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Duplicate subject (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 409', () => pm.expect([409]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{timetableToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/subjects",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subjectCode\": \"SST\",\n  \"subjectName\": \"Social Science\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Workloads with utilisation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{timetableToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/workloads"
+          }
+        },
+        {
+          "name": "Set Sana's caps",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{timetableToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/workloads",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teacherId\": \"5eed0001-0001-4000-8000-000000000044\",\n  \"teacherName\": \"Sana Qureshi\",\n  \"weeklyMaxPeriods\": 30,\n  \"dailyMaxPeriods\": 6,\n  \"qualifiedSubjectCodes\": [\n    \"MATH\",\n    \"SCI\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Daily cap above weekly (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.expect([400]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{timetableToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/workloads",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teacherId\": \"5eed0001-0001-4000-8000-000000000044\",\n  \"teacherName\": \"Sana Qureshi\",\n  \"weeklyMaxPeriods\": 4,\n  \"dailyMaxPeriods\": 6\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Allocate SST to Neha (not qualified, 409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 409', () => pm.expect([409]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{timetableToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/allocations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sectionId\": \"{{sectionId}}\",\n  \"subjectId\": \"{{sstSubjectId}}\",\n  \"teacherId\": \"{{teacherId}}\",\n  \"periodsPerWeek\": 6\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Allocations of 6-A",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{timetableToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/allocations?sectionId={{sectionId}}"
+          }
+        },
+        {
+          "name": "Parent cannot see workloads (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/workloads"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06002 - Generate conflict-free class timetables using automated constraint engines",
+      "item": [
+        {
+          "name": "Generate 6-A and 6-C",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{timetableToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/timetables/generate",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bellScheduleId\": \"{{bellScheduleId}}\",\n  \"sectionIds\": [\n    \"{{sectionId}}\",\n    \"{{sectionCId}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Subject teacher cannot generate (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/timetables/generate",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bellScheduleId\": \"{{bellScheduleId}}\",\n  \"sectionIds\": [\n    \"{{sectionId}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "No sections (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.expect([400]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{timetableToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/timetables/generate",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bellScheduleId\": \"{{bellScheduleId}}\",\n  \"sectionIds\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Class 6-A timetable",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code < 300) { try { pm.collectionVariables.set('timetableId', pm.response.json().data.entries[0].timetableId); } catch (e) {} }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{classTeacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/timetables/sections/{{sectionId}}"
+          }
+        },
+        {
+          "name": "Neha's timetable",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/timetables/teachers/{{teacherId}}"
+          }
+        },
+        {
+          "name": "Move a period to Sunday, not a working day (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.expect([400]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{timetableToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/timetables/entries/{{timetableId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dayOfWeek\": 7,\n  \"periodNumber\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Parent: Aarav's timetable",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/timetables/students/{{studentId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06003 - Assign proxy substitute teachers automatically during morning roll call",
+      "item": [
+        {
+          "name": "Neha absent next Monday (201 / 409 if already recorded)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const d = new Date(); d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7));",
+                  "pm.collectionVariables.set('nextMonday', `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201 or 409', () => pm.expect([201, 409]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{substitutionToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/substitutions/absences",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teacherId\": \"{{teacherId}}\",\n  \"absenceDate\": \"{{nextMonday}}\",\n  \"reason\": \"Medical leave\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Unknown teacher (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 404', () => pm.expect([404]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{substitutionToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/substitutions/absences",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teacherId\": \"nobody\",\n  \"absenceDate\": \"{{nextMonday}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Auto-assign proxies",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code < 300) { try { pm.collectionVariables.set('proxyId', pm.response.json().data.substitutions[0].proxyId); } catch (e) {} }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{substitutionToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/substitutions/auto-assign",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"{{nextMonday}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Day sheet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/substitutions?date={{nextMonday}}"
+          }
+        },
+        {
+          "name": "Hand the period to Sana (manual)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200 or 409', () => pm.expect([200, 409]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{substitutionToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/substitutions/{{proxyId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"proxyTeacherId\": \"5eed0001-0001-4000-8000-000000000044\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Class teacher cannot assign (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{classTeacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/substitutions/auto-assign",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"{{nextMonday}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06004 - Track syllabus completion percentages against annual academic calendars",
+      "item": [
+        {
+          "name": "Class 6 plans",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{coordinatorToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/syllabus/plans?gradeId={{gradeId}}"
+          }
+        },
+        {
+          "name": "Replace the SST plan after chapters were taught (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 409', () => pm.expect([409]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{coordinatorToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/syllabus/plans",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gradeId\": \"{{gradeId}}\",\n  \"subjectId\": \"{{sstSubjectId}}\",\n  \"topics\": [\n    {\n      \"chapterTitle\": \"Only chapter\",\n      \"plannedCompletionDate\": \"2026-12-01\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Mark chapter 4 taught in 6-A",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const t = new Date(Date.now() + 86400000);",
+                  "pm.collectionVariables.set('tomorrow', `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`);",
+                  "const n = new Date();",
+                  "pm.collectionVariables.set('today', `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`);",
+                  "pm.collectionVariables.set('dueAt', new Date(Date.now() + 2 * 86400000).toISOString());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/syllabus/topics/{{topicId}}/coverage",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sectionId\": \"{{sectionId}}\",\n  \"completedOn\": \"{{today}}\",\n  \"notes\": \"Map activity\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "6-C coverage (BEHIND)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{coordinatorToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/syllabus/coverage?sectionId={{sectionCId}}"
+          }
+        },
+        {
+          "name": "Parent: Aarav's coverage",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/syllabus/students/{{studentId}}/coverage"
+          }
+        },
+        {
+          "name": "Teacher cannot change the plan (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/syllabus/plans",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gradeId\": \"{{gradeId}}\",\n  \"subjectId\": \"{{sstSubjectId}}\",\n  \"topics\": [\n    {\n      \"chapterTitle\": \"x\",\n      \"plannedCompletionDate\": \"2026-12-01\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06005 - Upload digital learning assets, lecture videos, and reference e-books",
+      "item": [
+        {
+          "name": "Add a lecture video link (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.expect([201]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code < 300) { try { pm.collectionVariables.set('videoAssetId', pm.response.json().data.assetId); } catch (e) {} }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{elearningToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/assets/links",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Mughal architecture\",\n  \"gradeId\": \"{{gradeId}}\",\n  \"subjectId\": \"{{sstSubjectId}}\",\n  \"chapter\": \"The Mughal Empire\",\n  \"assetType\": \"VIDEO\",\n  \"url\": \"https://videos.dps.edu.in/sst/mughal-architecture\",\n  \"durationSeconds\": 600\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Upload PDF notes (multipart, 201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.expect([201]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{elearningToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/assets",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "mughal-notes.pdf"
+                },
+                {
+                  "key": "title",
+                  "value": "Mughal Empire notes",
+                  "type": "text"
+                },
+                {
+                  "key": "gradeId",
+                  "value": "{{gradeId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "subjectId",
+                  "value": "{{sstSubjectId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "chapter",
+                  "value": "The Mughal Empire",
+                  "type": "text"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "http:// link refused (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.expect([400]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{elearningToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/assets/links",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Insecure\",\n  \"gradeId\": \"{{gradeId}}\",\n  \"subjectId\": \"{{sstSubjectId}}\",\n  \"url\": \"http://example.org\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Class 6 assets",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/assets?gradeId={{gradeId}}"
+          }
+        },
+        {
+          "name": "Parent: assets of Aarav's class",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/assets?studentId={{studentId}}"
+          }
+        },
+        {
+          "name": "Parent cannot upload (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/assets/links",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"x\",\n  \"gradeId\": \"{{gradeId}}\",\n  \"subjectId\": \"{{sstSubjectId}}\",\n  \"url\": \"https://example.org\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06006 - Auto-generate multiple-choice quiz questions from uploaded chapter text",
+      "item": [
+        {
+          "name": "Create a draft quiz (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.expect([201]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code < 300) { try { pm.collectionVariables.set('quizId', pm.response.json().data.quizId); } catch (e) {} }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gradeId\": \"{{gradeId}}\",\n  \"subjectId\": \"{{sstSubjectId}}\",\n  \"quizTitle\": \"The Mughals - quick check\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Generate 5 questions from the chapter",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.expect([201]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code < 300) { try { pm.collectionVariables.set('questionId', pm.response.json().data.questions[0].questionId); } catch (e) {} }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes/{{quizId}}/questions/generate",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"chapterText\": \"The Mughal Empire was founded by Babur in 1526 after the First Battle of Panipat. Humayun lost the throne to Sher Shah Suri in 1540 and regained it fifteen years later. Akbar expanded the empire across northern India and introduced the mansabdari administration. Akbar moved his court to Fatehpur Sikri, a city he built near Agra. Shah Jahan built the Taj Mahal at Agra in memory of Mumtaz Mahal. Aurangzeb extended Mughal rule into the Deccan but faced resistance from Shivaji and the Marathas.\",\n  \"count\": 5,\n  \"topic\": \"Mughal Empire\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Add a question by hand",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.expect([201]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes/{{quizId}}/questions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"questionText\": \"Who built the Taj Mahal?\",\n  \"options\": [\n    \"Shah Jahan\",\n    \"Akbar\",\n    \"Babur\",\n    \"Humayun\"\n  ],\n  \"correctOptionIndex\": 0,\n  \"topic\": \"Rulers\",\n  \"marks\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Text too short (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.expect([400]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes/{{quizId}}/questions/generate",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"chapterText\": \"Too short.\",\n  \"count\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Parent cannot author (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes/{{quizId}}/questions/generate",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"chapterText\": \"The Mughal Empire was founded by Babur in 1526 after the First Battle of Panipat. Humayun lost the throne to Sher Shah Suri in 1540 and regained it fifteen years later. Akbar expanded the empire across northern India and introduced the mansabdari administration. Akbar moved his court to Fatehpur Sikri, a city he built near Agra. Shah Jahan built the Taj Mahal at Agra in memory of Mumtaz Mahal. Aurangzeb extended Mughal rule into the Deccan but faced resistance from Shivaji and the Marathas.\",\n  \"count\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06014 - Configure quiz countdown timers and randomized question order rules",
+      "item": [
+        {
+          "name": "Set the rules",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes/{{quizId}}/settings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"durationMinutes\": 15,\n  \"shuffleQuestions\": true,\n  \"shuffleOptions\": true,\n  \"maxTabSwitches\": 2,\n  \"attemptsAllowed\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Duration 0 (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.expect([400]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes/{{quizId}}/settings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"durationMinutes\": 0,\n  \"shuffleQuestions\": true,\n  \"shuffleOptions\": true,\n  \"maxTabSwitches\": 2,\n  \"attemptsAllowed\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Publish",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes/{{quizId}}/publish"
+          }
+        },
+        {
+          "name": "Questions locked after publishing (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 409', () => pm.expect([409]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes/{{quizId}}/questions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"questionText\": \"Late\",\n  \"options\": [\n    \"a\",\n    \"b\"\n  ],\n  \"correctOptionIndex\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06007 - Conduct proctored online assessments with anti-cheat tab-switch detection",
+      "item": [
+        {
+          "name": "Parent: published quizzes for Aarav",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes?studentId={{studentId}}"
+          }
+        },
+        {
+          "name": "Start Aarav's attempt (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.expect([201]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code < 300) { try { pm.collectionVariables.set('attemptId', pm.response.json().data.attemptId); } catch (e) {} }",
+                  "if (pm.response.code < 300) { try { pm.collectionVariables.set('attemptQuestionId', pm.response.json().data.questions[0].questionId); } catch (e) {} }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes/{{quizId}}/attempts",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"{{studentId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Autosave an answer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/attempts/{{attemptId}}/answers",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": [\n    {\n      \"questionId\": \"{{attemptQuestionId}}\",\n      \"selectedOption\": 0\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Report a tab switch",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/attempts/{{attemptId}}/events",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventType\": \"TAB_SWITCH\",\n  \"detail\": \"visibilitychange\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Submit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/attempts/{{attemptId}}/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Second attempt (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 409', () => pm.expect([409]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes/{{quizId}}/attempts",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"{{studentId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Proctoring report",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{principalToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes/{{quizId}}/proctoring-report"
+          }
+        },
+        {
+          "name": "Parent cannot see the report (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/quizzes/{{quizId}}/proctoring-report"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06018 - Monitor student video lecture watch-time durations and completion rates",
+      "item": [
+        {
+          "name": "Aarav watched 5 minutes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/assets/{{videoAssetId}}/watch-progress",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"{{studentId}}\",\n  \"positionSeconds\": 300,\n  \"watchedSeconds\": 300\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Skip ahead does not complete it",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/assets/{{videoAssetId}}/watch-progress",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"{{studentId}}\",\n  \"positionSeconds\": 590,\n  \"watchedSeconds\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "6-A watch report",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/assets/{{videoAssetId}}/watch-report?sectionId={{sectionId}}"
+          }
+        },
+        {
+          "name": "Teacher cannot record progress (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/assets/{{videoAssetId}}/watch-progress",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"{{studentId}}\",\n  \"positionSeconds\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06010 - Publish daily homework assignments directly to parent app dashboards",
+      "item": [
+        {
+          "name": "Publish homework (201)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const t = new Date(Date.now() + 86400000);",
+                  "pm.collectionVariables.set('tomorrow', `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`);",
+                  "const n = new Date();",
+                  "pm.collectionVariables.set('today', `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`);",
+                  "pm.collectionVariables.set('dueAt', new Date(Date.now() + 2 * 86400000).toISOString());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.expect([201]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code < 300) { try { pm.collectionVariables.set('homeworkId', pm.response.json().data.homeworkId); } catch (e) {} }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/homework",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sectionId\": \"{{sectionId}}\",\n  \"subjectId\": \"{{sstSubjectId}}\",\n  \"title\": \"Map of Mughal India\",\n  \"instructions\": \"Mark Agra, Delhi and Fatehpur Sikri\",\n  \"dueAt\": \"{{dueAt}}\",\n  \"maxMarks\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Parent submits for Aarav (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.expect([201]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code < 300) { try { pm.collectionVariables.set('submissionId', pm.response.json().data.submissionId); } catch (e) {} }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/homework/{{homeworkId}}/submissions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"{{studentId}}\",\n  \"submissionText\": \"Map attached\",\n  \"attachmentUrl\": \"https://files.dps.edu.in/aarav-map.jpg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Aarav's dashboard",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/homework/students/{{studentId}}"
+          }
+        },
+        {
+          "name": "Section homework",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{classTeacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/homework?sectionId={{sectionId}}"
+          }
+        },
+        {
+          "name": "Parent cannot publish (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/homework",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sectionId\": \"{{sectionId}}\",\n  \"subjectId\": \"{{sstSubjectId}}\",\n  \"title\": \"x\",\n  \"dueAt\": \"{{dueAt}}\",\n  \"maxMarks\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06008 - Evaluate submitted homework assignments digitally with annotations and marks",
+      "item": [
+        {
+          "name": "Roster with states",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/homework/{{homeworkId}}/submissions"
+          }
+        },
+        {
+          "name": "Marks over the maximum (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.expect([400]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/homework/submissions/{{submissionId}}/evaluation",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marksAwarded\": 11\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Evaluate with annotations",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/homework/submissions/{{submissionId}}/evaluation",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marksAwarded\": 8.5,\n  \"feedback\": \"Neat map; label the rivers\",\n  \"annotations\": [\n    {\n      \"anchor\": \"Agra\",\n      \"comment\": \"Correct\"\n    },\n    {\n      \"anchor\": \"Legend\",\n      \"comment\": \"Missing\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Resubmitting after evaluation (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 409', () => pm.expect([409]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/homework/{{homeworkId}}/submissions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"{{studentId}}\",\n  \"submissionText\": \"v2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06016 - Send automated alerts to students for overdue homework submissions",
+      "item": [
+        {
+          "name": "Run overdue alerts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{coordinatorToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/homework/overdue-alerts/run",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Aarav's alerts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/homework/overdue-alerts?studentId={{studentId}}"
+          }
+        },
+        {
+          "name": "Parent cannot run alerts (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/homework/overdue-alerts/run",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06009 - View student learning skill analytics and topic mastery radar charts",
+      "item": [
+        {
+          "name": "Aarav's skills (parent)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/analytics/students/{{studentId}}/skills"
+          }
+        },
+        {
+          "name": "6-A topic averages",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{classTeacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/analytics/sections/{{sectionId}}/skills"
+          }
+        },
+        {
+          "name": "Parent cannot see the section (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/analytics/sections/{{sectionId}}/skills"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06017 - Award digital skill badges to top-performing students on LMS leaderboards",
+      "item": [
+        {
+          "name": "6-A SST leaderboard",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/leaderboards/sections/{{sectionId}}?subjectId={{sstSubjectId}}"
+          }
+        },
+        {
+          "name": "Badge for the top 3",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/badges/award-top",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sectionId\": \"{{sectionId}}\",\n  \"subjectId\": \"{{sstSubjectId}}\",\n  \"topN\": 3,\n  \"badgeCode\": \"HISTORY_STAR\",\n  \"badgeName\": \"History Star\",\n  \"points\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Badge code with spaces (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.expect([400]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/badges",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"{{studentId}}\",\n  \"badgeCode\": \"bad code\",\n  \"badgeName\": \"x\",\n  \"reason\": \"x\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Aarav's badges",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/badges/students/{{studentId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06012 - Schedule remedial class sessions for students needing academic support",
+      "item": [
+        {
+          "name": "Candidates in 6-A SST",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/remedial/candidates?sectionId={{sectionId}}&subjectId={{sstSubjectId}}&thresholdPercent=60"
+          }
+        },
+        {
+          "name": "After-school remedial class (201)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const d = new Date(); d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7));",
+                  "pm.collectionVariables.set('nextMonday', `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.expect([201]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/remedial-sessions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subjectId\": \"{{sstSubjectId}}\",\n  \"gradeId\": \"{{gradeId}}\",\n  \"sessionDate\": \"{{nextMonday}}\",\n  \"startTime\": \"14:30\",\n  \"endTime\": \"15:15\",\n  \"venue\": \"Room 12\",\n  \"focusTopic\": \"Mughal rulers\",\n  \"studentIds\": [\n    \"{{studentId}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "End before start (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.expect([400]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/remedial-sessions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subjectId\": \"{{sstSubjectId}}\",\n  \"gradeId\": \"{{gradeId}}\",\n  \"sessionDate\": \"{{nextMonday}}\",\n  \"startTime\": \"15:00\",\n  \"endTime\": \"14:00\",\n  \"focusTopic\": \"x\",\n  \"studentIds\": [\n    \"{{studentId}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Parent: Aarav's sessions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{parentToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/remedial-sessions/students/{{studentId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06013 - Track teacher daily lesson plan submissions and principal approval statuses",
+      "item": [
+        {
+          "name": "Write and submit today's plan (201)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const t = new Date(Date.now() + 86400000);",
+                  "pm.collectionVariables.set('tomorrow', `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`);",
+                  "const n = new Date();",
+                  "pm.collectionVariables.set('today', `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`);",
+                  "pm.collectionVariables.set('dueAt', new Date(Date.now() + 2 * 86400000).toISOString());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201 or 409', () => pm.expect([201, 409]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }",
+                  "if (pm.response.code < 300) { try { pm.collectionVariables.set('lessonPlanId', pm.response.json().data.lessonPlanId); } catch (e) {} }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/lesson-plans",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sectionId\": \"{{sectionId}}\",\n  \"subjectId\": \"{{sstSubjectId}}\",\n  \"planDate\": \"{{today}}\",\n  \"objectives\": \"Locate the Mughal capitals on a map\",\n  \"activities\": \"Map work in pairs\",\n  \"submit\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Return without remarks (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.expect([400]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{principalToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/lesson-plans/{{lessonPlanId}}/review",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decision\": \"RETURNED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Approve",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{principalToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/lesson-plans/{{lessonPlanId}}/review",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decision\": \"APPROVED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "My plans",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/lesson-plans"
+          }
+        },
+        {
+          "name": "Compliance this week",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{principalToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/lesson-plans/compliance?from={{today}}&to={{nextMonday}}"
+          }
+        },
+        {
+          "name": "Teacher cannot see compliance (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/lesson-plans/compliance?from={{today}}&to={{today}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06011 - Manage computer lab and science laboratory room reservation schedules",
+      "item": [
+        {
+          "name": "Labs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/labs"
+          }
+        },
+        {
+          "name": "Book Computer Lab 1 for 6-A tomorrow",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const t = new Date(Date.now() + 86400000);",
+                  "pm.collectionVariables.set('tomorrow', `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`);",
+                  "const n = new Date();",
+                  "pm.collectionVariables.set('today', `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`);",
+                  "pm.collectionVariables.set('dueAt', new Date(Date.now() + 2 * 86400000).toISOString());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201 or 409', () => pm.expect([201, 409]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }",
+                  "if (pm.response.code < 300) { try { pm.collectionVariables.set('reservationId', pm.response.json().data.reservationId); } catch (e) {} }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/labs/{{roomId}}/reservations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reservationDate\": \"{{tomorrow}}\",\n  \"startTime\": \"10:30\",\n  \"endTime\": \"11:10\",\n  \"sectionId\": \"{{sectionId}}\",\n  \"purpose\": \"Spreadsheet practical\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Overlapping booking (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 409', () => pm.expect([409]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{classTeacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/labs/{{roomId}}/reservations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reservationDate\": \"{{tomorrow}}\",\n  \"startTime\": \"10:45\",\n  \"endTime\": \"11:30\",\n  \"purpose\": \"Typing\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Cancel the booking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200 or 409', () => pm.expect([200, 409]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/labs/reservations/{{reservationId}}/cancel",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Class trip\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Add a lab (coordinator, 201 / 409 if it exists)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201 or 409', () => pm.expect([201, 409]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{coordinatorToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/labs",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"branchId\": \"DPS-DELHI-NORTH\",\n  \"roomName\": \"Language Lab\",\n  \"roomType\": \"LANGUAGE_LAB\",\n  \"capacity\": 30\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Teacher cannot add a lab (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/labs",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"branchId\": \"DPS-DELHI-NORTH\",\n  \"roomName\": \"Mine\",\n  \"roomType\": \"COMPUTER_LAB\",\n  \"capacity\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06015 - Export master faculty timetables to PDF for staff room noticeboards",
+      "item": [
+        {
+          "name": "Faculty timetable PDF",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{principalToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/timetables/faculty/pdf?bellScheduleId={{bellScheduleId}}"
+          }
+        },
+        {
+          "name": "One teacher's page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{timetableToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/timetables/faculty/pdf?bellScheduleId={{bellScheduleId}}&teacherId={{teacherId}}"
+          }
+        },
+        {
+          "name": "Subject teacher cannot export (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/timetables/faculty/pdf?bellScheduleId={{bellScheduleId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "US-06019 - Archive historical lesson plans and syllabus repos for faculty reference",
+      "item": [
+        {
+          "name": "Archive the current year (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 409', () => pm.expect([409]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{coordinatorToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/archives",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"academicYearId\": \"{{academicYearId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Search archived lesson plans",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/archives/lesson-plans?q=mughal"
+          }
+        },
+        {
+          "name": "Archived syllabus",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.expect([200]).to.include(pm.response.code));",
+                  "const ct = pm.response.headers.get('Content-Type') || '';",
+                  "if (ct.includes('json') && pm.response.code < 300) { pm.test('success envelope', () => pm.expect(pm.response.json().success).to.eql(true)); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/archives/syllabus?gradeId={{gradeId}}"
+          }
+        },
+        {
+          "name": "Teacher cannot archive (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.expect([403]).to.include(pm.response.code));",
+                  "if (pm.response.code >= 400) { pm.test('error envelope', () => pm.expect(pm.response.json()).to.have.property('errorCode')); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/archives",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"academicYearId\": \"{{academicYearId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8087/academicservice/api/v1/lms"
+    },
+    {
+      "key": "authUrl",
+      "value": "http://localhost:8082/authservice"
+    },
+    {
+      "key": "password",
+      "value": "Password@123"
+    },
+    {
+      "key": "bellScheduleId",
+      "value": "5eed0006-0002-4000-8000-000000000001"
+    },
+    {
+      "key": "sectionId",
+      "value": "5eed0003-0003-4000-8000-000000000091"
+    },
+    {
+      "key": "sectionCId",
+      "value": "5eed0003-0003-4000-8000-000000000093"
+    },
+    {
+      "key": "gradeId",
+      "value": "5eed0003-0002-4000-8000-000000000009"
+    },
+    {
+      "key": "sstSubjectId",
+      "value": "5eed0006-0001-4000-8000-000000000005"
+    },
+    {
+      "key": "teacherId",
+      "value": "5eed0001-0001-4000-8000-000000000034"
+    },
+    {
+      "key": "studentId",
+      "value": "5eed0003-0005-4000-8000-000000000001"
+    },
+    {
+      "key": "roomId",
+      "value": "5eed0006-0008-4000-8000-000000000001"
+    },
+    {
+      "key": "topicId",
+      "value": "5eed0006-0006-4000-8000-000000000004"
+    },
+    {
+      "key": "academicYearId",
+      "value": "5eed0003-0001-4000-8000-000000000002"
+    },
+    {
+      "key": "nextMonday",
+      "value": ""
+    },
+    {
+      "key": "today",
+      "value": ""
+    },
+    {
+      "key": "tomorrow",
+      "value": ""
+    },
+    {
+      "key": "dueAt",
+      "value": ""
+    },
+    {
+      "key": "newScheduleId",
+      "value": ""
+    },
+    {
+      "key": "timetableId",
+      "value": ""
+    },
+    {
+      "key": "proxyId",
+      "value": ""
+    },
+    {
+      "key": "videoAssetId",
+      "value": ""
+    },
+    {
+      "key": "quizId",
+      "value": ""
+    },
+    {
+      "key": "questionId",
+      "value": ""
+    },
+    {
+      "key": "attemptId",
+      "value": ""
+    },
+    {
+      "key": "attemptQuestionId",
+      "value": ""
+    },
+    {
+      "key": "homeworkId",
+      "value": ""
+    },
+    {
+      "key": "submissionId",
+      "value": ""
+    },
+    {
+      "key": "lessonPlanId",
+      "value": ""
+    },
+    {
+      "key": "reservationId",
+      "value": ""
+    },
+    {
+      "key": "coordinatorToken",
+      "value": ""
+    },
+    {
+      "key": "timetableToken",
+      "value": ""
+    },
+    {
+      "key": "substitutionToken",
+      "value": ""
+    },
+    {
+      "key": "elearningToken",
+      "value": ""
+    },
+    {
+      "key": "teacherToken",
+      "value": ""
+    },
+    {
+      "key": "classTeacherToken",
+      "value": ""
+    },
+    {
+      "key": "principalToken",
+      "value": ""
+    },
+    {
+      "key": "parentToken",
+      "value": ""
+    }
+  ]
+}
